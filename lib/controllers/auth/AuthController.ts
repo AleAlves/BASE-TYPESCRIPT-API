@@ -5,11 +5,11 @@ import { CryptoTools } from "../../security/CryptoTools";
 import { HTTPResponse } from "../../models/http/HTTPResponse";
 import { PublicKey } from "../../security/RSA/model/PublicKey";
 
-export class AuthController {
+export class AuthController extends BaseController{
 
     public getPublicKey(req: Request, res: Response) {
         let publicKey = new PublicKey(CryptoTools.RSA().publicKey())
-        res.send(new HTTPResponse(publicKey))
+        super.send(res, new HTTPResponse(publicKey))
     }
 
 }

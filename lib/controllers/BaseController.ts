@@ -1,8 +1,10 @@
 
 import { Response } from "express";
 
-export interface BaseController {
+export class BaseController {
 
-    send(res: Response, data: any)
+    public send(res: Response, data: any) {
+        res.send(data)
+    }
 
 }
