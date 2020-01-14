@@ -8,10 +8,15 @@ class AuthRoutes {
         this.root = root;
         this.publicKey();
         this.generateToken();
+        this.decrypt();
     }
     publicKey() {
         let version = "v1";
         this.app.route(this.root + version + '/publicKey').get(this.authController.getPublicKey);
+    }
+    decrypt() {
+        let version = "v1";
+        this.app.route(this.root + version + '/decrypt').post(this.authController.decrypt);
     }
     generateToken() {
         let version = "v1";
