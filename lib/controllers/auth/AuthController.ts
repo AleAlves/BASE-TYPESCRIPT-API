@@ -6,7 +6,7 @@ import { PublicKey } from "../../security/RSA/model/PublicKey";
 import { JWTSession } from "../../security/JWT/model/JWTSession";
 import { JWTModel } from "../../security/JWT/model/JWTModel";
 
-export class AuthController extends BaseController {
+export class AuthController extends BaseController {   
 
     public getPublicKey(req: Request, res: Response) {
         let publicKey = new PublicKey(CryptoTools.RSA().publicKey())
