@@ -13,6 +13,11 @@ export class AuthController extends BaseController {
         super.send(res, publicKey)
     }
 
+    public decrypt(req: Request, res: Response) {
+        let data = JSON.parse(JSON.stringify(req.body))
+        super.send(res, CryptoTools.RSA().decrypt(data.teste, "utf8"))
+    }
+
     public generateToken(req: Request, res: Response){
         let plainData = CryptoTools.RSA().decrypt(req.body)
         console.log(JSON.stringify(plainData))

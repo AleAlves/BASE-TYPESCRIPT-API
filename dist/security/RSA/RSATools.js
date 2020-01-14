@@ -17,7 +17,7 @@ class RSATools {
         return RSAKey.encrypt(data, STANDAR_ENCRYPT_ENCODE);
     }
     decrypt(data, format) {
-        if (format) {
+        if (format == null) {
             format = STANDARD_DECRYPT_FORMAT;
         }
         return RSAKey.decrypt(data, format);

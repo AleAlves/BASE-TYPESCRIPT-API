@@ -3,8 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class BaseResponse {
     constructor(status, code, message) {
         this.code = 200;
-        this.status = "SUCESS";
-        this.message = "";
+        this.status = "SUCCESS";
         if (code) {
             this.code = code;
         }
