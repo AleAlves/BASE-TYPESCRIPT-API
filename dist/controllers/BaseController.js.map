@@ -1,1 +1,1 @@
-{"version":3,"file":"BaseController.js","sourceRoot":"","sources":["../../lib/controllers/BaseController.ts"],"names":[],"mappings":""}
+{"version":3,"file":"BaseController.js","sourceRoot":"","sources":["../../lib/controllers/BaseController.ts"],"names":[],"mappings":";;AAGA,MAAa,cAAc;IAEhB,IAAI,CAAC,GAAa,EAAE,IAAS;QAChC,GAAG,CAAC,IAAI,CAAC,IAAI,CAAC,CAAA;IAClB,CAAC;CAEJ;AAND,wCAMC"}

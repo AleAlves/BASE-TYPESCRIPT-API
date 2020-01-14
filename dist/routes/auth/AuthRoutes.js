@@ -7,10 +7,15 @@ class AuthRoutes {
         this.app = app;
         this.root = root;
         this.publicKey();
+        this.generateToken();
     }
     publicKey() {
         let version = "v1";
         this.app.route(this.root + version + '/publicKey').get(this.authController.getPublicKey);
+    }
+    generateToken() {
+        let version = "v1";
+        this.app.route(this.root + version + '/generateToken').post(this.authController.generateToken);
     }
 }
 exports.AuthRoutes = AuthRoutes;

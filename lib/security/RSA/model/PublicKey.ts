@@ -1,5 +1,6 @@
 
 export class PublicKey {
+    
     publicKey: String
 
     constructor(publicKey: String) {

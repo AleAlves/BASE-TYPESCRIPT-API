@@ -1,8 +1,8 @@
 const NodeRSA = require('node-rsa');
-const generator = require('generate-password');
 const ALGORITHM = 'pkcs1'
 const PUBLIC_KEY_FORMT = 'pkcs8-public-pem'
-const STANDAR_ENCODE = 'base64'
+const STANDAR_ENCRYPT_ENCODE = 'base64'
+const STANDARD_DECRYPT_FORMAT = 'json'
 
 const RSAKey = new NodeRSA({
     b: 1024
@@ -17,10 +17,13 @@ export class RSATools {
     }
 
     public encrypt(data: String) {
-        return RSAKey.encrypt(data, STANDAR_ENCODE);
+        return RSAKey.encrypt(data, STANDAR_ENCRYPT_ENCODE);
     }
 
     public decrypt(data: String, format?: String) {
+        if (format) {
+            format = STANDARD_DECRYPT_FORMAT
+        }
         return RSAKey.decrypt(data, format);
     }
 
