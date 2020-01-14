@@ -21,7 +21,7 @@ export class RSATools {
     }
 
     public decrypt(data: String, format?: String) {
-        if (format) {
+        if (format == null) {
             format = STANDARD_DECRYPT_FORMAT
         }
         return RSAKey.decrypt(data, format);
