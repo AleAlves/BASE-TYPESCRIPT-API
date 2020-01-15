@@ -1,7 +1,5 @@
 
 import { AuthController } from "../../controllers/auth/AuthController";
-import { CryptoTools } from "../../security/CryptoTools";
-
 
 export class AuthRoutes {
 
@@ -29,6 +27,6 @@ export class AuthRoutes {
 
     private generateToken(){
         let version = "v1"
-        this.app.route(this.root + version + '/generateToken').post(this.authController.generateToken)
+        this.app.route(this.root + version + '/generateToken').post(this.authController.generateTicket)
     }
 }

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { ContactController } from "../controllers/crmController";
-import { AuthRoutes } from "../routes/auth/AuthRoutes"
+import { AuthRoutes } from "./auth/AuthRoutes"
 
 const API_ROOT = "/api/"
 
-export class Routes {
+export class Router {
 
     private authRoutes: AuthRoutes
 

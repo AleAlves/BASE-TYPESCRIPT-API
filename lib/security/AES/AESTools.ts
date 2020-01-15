@@ -1,6 +1,4 @@
-
 const CryptoJS = require('crypto-js');
-const JsonWebToken = require('jwt-simple');
 const KEY_SIZE = 8
 const ITERATIONS = 2048
 

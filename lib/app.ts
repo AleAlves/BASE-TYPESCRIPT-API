@@ -1,14 +1,14 @@
 // lib/app.ts
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/crmRoutes";
+import { Router } from "./routes/Router";
 import * as mongoose from "mongoose";
 const packageInfo = require('../package.json');
 
 class App {
 
   public app: express.Application;
-  public routePrv: Routes = new Routes();
+  public routePrv: Router = new Router();
   public mongoUrl: string = 'mongodb://127.0.0.1:27017/' + packageInfo.name + '-database';
 
   constructor() {

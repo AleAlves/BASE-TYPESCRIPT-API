@@ -18,10 +18,10 @@ export class AuthController extends BaseController {
         super.send(res, CryptoTools.RSA().decrypt(data.teste, "utf8"))
     }
 
-    public generateToken(req: Request, res: Response){
+    public generateTicket(req: Request, res: Response){
         let plainData = CryptoTools.RSA().decrypt(req.body)
         console.log(JSON.stringify(plainData))
-        let clientData = new JWTModel(CryptoTools.JWT().encode(new JWTSession(plainData)))
+        let clientData = new JWTModel(CryptoTools.JWT().sign(new JWTSession(plainData)))
         console.log(JSON.stringify(clientData))
         super.send(res, clientData)
     }
