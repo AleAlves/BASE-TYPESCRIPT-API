@@ -15,7 +15,7 @@ export class NPSController extends BaseController {
 
         newNPS.save((err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
         });

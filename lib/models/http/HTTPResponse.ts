@@ -5,7 +5,9 @@ export class HTTPResponse {
     response: BaseResponse
 
     constructor(data?: any, status?: String, code?: number, message? : String){ 
-        this.data = JSON.parse(JSON.stringify(data)); 
+        if(data) {
+            this.data = JSON.parse(JSON.stringify(data)); 
+        }
         this.response = new BaseResponse(status, code, message)
     }
 }

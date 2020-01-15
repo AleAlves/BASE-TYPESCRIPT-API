@@ -9,7 +9,7 @@ class NPSController extends BaseController_1.BaseController {
         let newNPS = new NPS(req.body);
         newNPS.save((err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
         });
