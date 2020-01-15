@@ -1,31 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const JsonWebToken = require('jwt-simple');
+const jsonWebToken = require('jsonwebtoken');
 const generator = require('generate-password');
-var JWTSecret = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
-    length: 32,
+const tokenKey = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
+    length: 64,
     numbers: true
 });
+const tokenLife = "24h";
 class JWTTools {
-    encode(data) {
+    sign(data) {
         try {
-            return JsonWebToken.encode(data, JWTSecret);
+            return jsonWebToken.sign(data, tokenKey, { expiresIn: tokenLife });
         }
         catch (e) {
             console.log("JWT e: " + e);
             return null;
         }
     }
-    decode(data) {
+    verify(jwt) {
         try {
-            return JsonWebToken.decode(data, JWTSecret);
+            return jwt.verify(tokenKey, 'wrong-secret');
         }
         catch (e) {
             console.log("JWT e: " + e);
             return null;
         }
-    }
-    verify(data) {
     }
 }
 exports.JWTTools = JWTTools;

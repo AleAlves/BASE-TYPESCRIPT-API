@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class JWTSession {
     constructor(clientAESData) {
+        this.id = clientAESData.id;
         this.uid = clientAESData.uid;
         this.AESIV = clientAESData.AESIV;
         this.AESKey = clientAESData.AESKey;

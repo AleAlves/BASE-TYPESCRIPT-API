@@ -6,8 +6,8 @@ export class BaseController {
 
 
 
-    public send(res: Response, data: any) {
-        res.send(new HTTPResponse(data))
+    public send(res: Response, data?: any, status?: String, code?: number, message? : String) {
+        res.send(new HTTPResponse(data, status, code, message))
     }
 
 }

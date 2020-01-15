@@ -20,7 +20,7 @@ class AuthRoutes {
     }
     generateToken() {
         let version = "v1";
-        this.app.route(this.root + version + '/generateToken').post(this.authController.generateToken);
+        this.app.route(this.root + version + '/generateToken').post(this.authController.generateTicket);
     }
 }
 exports.AuthRoutes = AuthRoutes;

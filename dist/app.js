@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // lib/app.ts
 const express = require("express");
 const bodyParser = require("body-parser");
-const crmRoutes_1 = require("./routes/crmRoutes");
+const Router_1 = require("./routes/Router");
 const mongoose = require("mongoose");
 const packageInfo = require('../package.json');
 class App {
     constructor() {
-        this.routePrv = new crmRoutes_1.Routes();
+        this.routePrv = new Router_1.Router();
         this.mongoUrl = 'mongodb://127.0.0.1:27017/' + packageInfo.name + '-database';
         this.app = express();
         this.config();
