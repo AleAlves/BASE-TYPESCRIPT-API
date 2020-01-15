@@ -13,7 +13,7 @@ export const NPSSchema = new Schema({
         required: 'Send SO Version'
     },
     versionApp: {
-        type: String,
+        type: Number,
         required: 'Send App Version'       
     },
     created_date: {

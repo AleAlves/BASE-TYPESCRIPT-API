@@ -6,6 +6,9 @@ const BaseController_1 = require("../BaseController");
 const NPS = mongoose.model('NPS', npsModel_1.NPSSchema);
 class NPSController extends BaseController_1.BaseController {
     addNewNPS(req, res) {
+        //TODO: authorizedUser
+        let nps = req.body;
+        nps.versionApp = NPSController.transformVersionToIntWithPadding(nps.versionApp);
         let newNPS = new NPS(req.body);
         newNPS.save((err, nps) => {
             if (err) {
@@ -13,6 +16,28 @@ class NPSController extends BaseController_1.BaseController {
             }
             super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
         });
+    }
+    static transformVersionToIntWithPadding(version) {
+        let versionArray = version.split('.');
+        var versionWithPadding = "";
+        versionArray.forEach(versionNumber => {
+            let versionPadding = NPSController.leadingNullString(versionNumber, 4);
+            versionWithPadding = versionWithPadding + versionPadding;
+        });
+        return +versionWithPadding;
+    }
+    static leadingNullString(value, minSize) {
+        if (typeof value == "number") {
+            value = "" + value;
+        }
+        let outString = '';
+        let counter = minSize - value.length;
+        if (counter > 0) {
+            for (let i = 0; i < counter; i++) {
+                outString += '0';
+            }
+        }
+        return (value + outString);
     }
     getNPS(req, res) {
         NPS.find({}, (err, nps) => {
