@@ -15,6 +15,7 @@ export class AuthController extends BaseController {
 
     public decrypt(req: Request, res: Response) {
         let data = JSON.parse(JSON.stringify(req.body))
+        console.log(JSON.stringify(data))
         super.send(res, CryptoTools.RSA().decrypt(data.teste, "utf8"))
     }
 

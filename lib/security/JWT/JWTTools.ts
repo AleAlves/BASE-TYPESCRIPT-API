@@ -22,7 +22,7 @@ export class JWTTools {
 
     public verify(jwt: any) {
         try {
-            return jwt.verify(tokenKey, 'wrong-secret');
+            return jwt.verify(tokenKey, tokenKey);
         }
         catch (e) {
             console.log("JWT e: " + e);
