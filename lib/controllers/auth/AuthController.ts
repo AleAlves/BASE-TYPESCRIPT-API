@@ -33,10 +33,10 @@ export class AuthController extends BaseController {
 
         console.log("Session: "+JSON.stringify(plainData))
 
-        let clientData = new JWTModel(CryptoTools.JWT().sign(session))
+        let ticket = new JWTModel(CryptoTools.JWT().sign(session))
 
-        console.log("Token: "+JSON.stringify(clientData))
+        console.log("Token: "+JSON.stringify(ticket))
 
-        super.send(res, clientData)
+        super.send(res, ticket)
     }
 }

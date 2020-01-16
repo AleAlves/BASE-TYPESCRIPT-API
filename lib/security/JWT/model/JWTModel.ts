@@ -1,9 +1,11 @@
 
 export class JWTModel {
-    
-    token: String
 
-    constructor(token: String) {
+    token: String
+    ticket: String
+
+    constructor(ticket?: String, token?: String) {
         this.token = token
+        this.ticket = ticket
     }
 }
