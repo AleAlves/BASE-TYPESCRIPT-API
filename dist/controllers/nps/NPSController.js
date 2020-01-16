@@ -10,12 +10,25 @@ class NPSController extends BaseController_1.BaseController {
         let nps = req.body;
         nps.versionApp = NPSController.transformVersionToIntWithPadding(nps.versionApp);
         let newNPS = new NPS(req.body);
+        //TODO: NPS.findById(req.params.npsID, (err, nps) => {
+        // if (err) {
+        //     super.send(res, null, err.name, 400, err.message);
         newNPS.save((err, nps) => {
             if (err) {
                 super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
         });
+        // } else {
+        //   super.send(res, nps, null, 200);
+        //  NPS.findOneAndUpdate({ _id: req.params.npsID }, req.body, { new: true }, (err, nps) => {
+        //     if (err) {
+        //         super.send(res, null, err.name, 400, err.message);
+        //     }
+        //     super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
+        // });
+        //}
+        //});
     }
     static transformVersionToIntWithPadding(version) {
         let versionArray = version.split('.');
@@ -42,7 +55,7 @@ class NPSController extends BaseController_1.BaseController {
     getNPS(req, res) {
         NPS.find({}, (err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, null, 200);
         });
@@ -50,7 +63,7 @@ class NPSController extends BaseController_1.BaseController {
     getNPSWithID(req, res) {
         NPS.findById(req.params.npsID, (err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, null, 200);
         });
@@ -58,7 +71,7 @@ class NPSController extends BaseController_1.BaseController {
     updateNPS(req, res) {
         NPS.findOneAndUpdate({ _id: req.params.npsID }, req.body, { new: true }, (err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
         });
@@ -66,7 +79,7 @@ class NPSController extends BaseController_1.BaseController {
     deleteNPS(req, res) {
         NPS.remove({ _id: req.params.npsID }, (err, nps) => {
             if (err) {
-                super.send(res, null, 'Error', 400, err);
+                super.send(res, null, err.name, 400, err.message);
             }
             super.send(res, nps, null, 200);
         });

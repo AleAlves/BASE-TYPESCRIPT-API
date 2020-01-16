@@ -6,13 +6,13 @@ const tokenKey = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
     length: 64,
     numbers: true
 });
-const tokenLife = "24h"
+const tokenLife = "86400" // 24h
 
 export class JWTTools {
 
     public sign(data: any) {
         try {
-            return jsonWebToken.sign(data, tokenKey, { expiresIn: tokenLife })
+            return jsonWebToken.sign(JSON.parse(JSON.stringify(data)), tokenKey, { expiresIn: 84600 })
         }
         catch (e) {
             console.log("JWT e: " + e);

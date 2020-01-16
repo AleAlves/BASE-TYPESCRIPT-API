@@ -12,11 +12,11 @@ class AuthController extends BaseController_1.BaseController {
     }
     decrypt(req, res) {
         let data = JSON.parse(JSON.stringify(req.body));
+        console.log(JSON.stringify(data));
         super.send(res, CryptoTools_1.CryptoTools.RSA().decrypt(data.teste, "utf8"));
     }
     generateTicket(req, res) {
-        let plainData = CryptoTools_1.CryptoTools.RSA().decrypt(req.body);
-        console.log(JSON.stringify(plainData));
+        let plainData = CryptoTools_1.CryptoTools.RSA().decrypt(req.body, "utf8");
         let clientData = new JWTModel_1.JWTModel(CryptoTools_1.CryptoTools.JWT().sign(new JWTSession_1.JWTSession(plainData)));
         console.log(JSON.stringify(clientData));
         super.send(res, clientData);

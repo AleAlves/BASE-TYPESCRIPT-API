@@ -11,8 +11,8 @@ export class AuthRoutes {
         this.app = app
         this.root = root
         this.publicKey()
-        this.generateToken()
         this.decrypt()
+        this.generateTicekt()
     }
 
     private publicKey() {
@@ -25,8 +25,8 @@ export class AuthRoutes {
         this.app.route(this.root + version + '/decrypt').post(this.authController.decrypt)
     }
 
-    private generateToken(){
+    private generateTicekt(){
         let version = "v1"
-        this.app.route(this.root + version + '/generateToken').post(this.authController.generateTicket)
+        this.app.route(this.root + version + '/ticket').post(this.authController.generateTicket)
     }
 }
