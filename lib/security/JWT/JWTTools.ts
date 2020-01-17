@@ -1,20 +1,23 @@
 
-const jsonWebToken = require('jsonwebtoken')
+const JWT = require('jsonwebtoken')
 const generator = require('generate-password');
+
+import { JWTSession } from "../JWT/model/JWTSession"
+import { JWTType } from "../JWT/model/JWTType"
 
 var key = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
     length: 64,
     numbers: true
 });
 
-const sessionTokenLife = 84600 // 24h
-const accessTokenLife = 120 //2min
+const sessionTokenLife = 300 // 3min
+const accessTokenLife = 60 //2min
 
 export class JWTTools {
 
     public instance(){
         console.log(key)
-        return jsonWebToken
+        return JWT
     }
 
     public key(){
@@ -26,7 +29,7 @@ export class JWTTools {
     public signAccessToken(data: any) {
         try {
             console.log(key)
-            return jsonWebToken.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: accessTokenLife })
+            return JWT.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: accessTokenLife })
         }
         catch (e) {
             console.log("JWT e: " + e);
@@ -37,7 +40,7 @@ export class JWTTools {
     public signSessionToken(data: any) {
         try {
             console.log(key)
-            return jsonWebToken.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: sessionTokenLife })
+            return JWT.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: sessionTokenLife })
         }
         catch (e) {
             console.log("JWT e: " + e);
@@ -45,15 +48,28 @@ export class JWTTools {
         }
     }
 
-    public verify(jwt: any) {
-        try {
-            console.log(key)
-            return jwt.verify(key, key);
-        }
-        catch (e) {
-            console.log("JWT e: " + e);
-            return null;
-        }
+    public renewSessionToken(expiredToken : String){
+        let expiredTokenData = this.decodeToken(expiredToken)
+        let newToken = new JWTSession(expiredTokenData, JWTType.SESSION)
+        return this.signSessionToken(newToken)
+    }
+
+    public decodeToken(token: String) {
+        JWT.verify(token, function(error, decodedToken){
+            if(error){
+                return undefined
+            }
+            return decodedToken
+        });
+    }
+
+    public verify(token: String) {
+        JWT.verify(token, function(error, decodedToken){
+            if(error){
+                return false
+            }
+            return true
+        });
     }
 
 }
