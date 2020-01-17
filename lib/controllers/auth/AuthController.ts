@@ -19,24 +19,19 @@ export class AuthController extends BaseController {
         super.send(res, CryptoTools.RSA().decrypt(data.teste, "utf8"))
     }
 
-    public generateTicket(req: Request, res: Response){
+    public generateAccessToken(req: Request, res: Response){
         
         let body = JSON.parse(JSON.stringify(req.body))
-
-        console.log("BODY: "+JSON.stringify(body))
-
         let plainData = CryptoTools.RSA().decrypt(req.body.data, "json")
-
-        console.log("Plain: "+JSON.stringify(plainData))
-
         let session = new JWTSession(plainData)
+        let encrypted = CryptoTools.JWT().signAccessToken(session)
+        let accessToken = JSON.parse(JSON.stringify(new JWTModel(undefined, encrypted)))
 
+        console.log("Body: "+JSON.stringify(body))
+        console.log("Plain: "+JSON.stringify(plainData))
         console.log("Session: "+JSON.stringify(plainData))
+        console.log("Token: "+ JSON.stringify(accessToken))
 
-        let ticket = new JWTModel(CryptoTools.JWT().sign(session))
-
-        console.log("Token: "+JSON.stringify(ticket))
-
-        super.send(res, ticket)
+        super.send(res, accessToken)
     }
 }

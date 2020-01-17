@@ -1,18 +1,20 @@
 
+import { BaseRouter } from "../base/BaseRouter"
 import { AuthController } from "../../controllers/auth/AuthController";
 
-export class AuthRoutes {
+export class AuthRoutes extends BaseRouter {
 
     private app: any
     private root: String
     private authController: AuthController = new AuthController();
 
     constructor(app: any, root: String) {
+        super();
         this.app = app
         this.root = root
         this.publicKey()
         this.decrypt()
-        this.generateTicekt()
+        this.generateAccessToken()
     }
 
     private publicKey() {
@@ -25,8 +27,8 @@ export class AuthRoutes {
         this.app.route(this.root + version + '/decrypt').post(this.authController.decrypt)
     }
 
-    private generateTicekt(){
+    private generateAccessToken(){
         let version = "v1"
-        this.app.route(this.root + version + '/ticket').post(this.authController.generateTicket)
+        this.app.route(this.root + version + '/accessToken').post(this.authController.generateAccessToken)
     }
 }

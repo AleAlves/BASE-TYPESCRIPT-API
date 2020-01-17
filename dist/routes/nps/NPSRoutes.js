@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const BaseRouter_1 = require("../base/BaseRouter");
 const NPSController_1 = require("../../controllers/nps/NPSController");
-class NPSRoutes {
+class NPSRoutes extends BaseRouter_1.BaseRouter {
     constructor(app, root) {
+        super();
         this.npsController = new NPSController_1.NPSController();
         this.app = app;
         this.root = root;
@@ -14,22 +16,27 @@ class NPSRoutes {
     }
     addNewNPS() {
         let version = "v1";
+        super.secureAPI(this.app);
         this.app.route(this.root + version + '/nps').post(this.npsController.addNewNPS);
     }
     getNPS() {
         let version = "v1";
+        super.secureAPI(this.app);
         this.app.route(this.root + version + '/nps').get(this.npsController.getNPS);
     }
     getNPSWithID() {
         let version = "v1";
+        super.secureAPI(this.app);
         this.app.route(this.root + version + '/nps/:npsID').get(this.npsController.getNPSWithID);
     }
     updateNPS() {
         let version = "v1";
+        super.secureAPI(this.app);
         this.app.route(this.root + version + '/nps/:npsID').post(this.npsController.updateNPS);
     }
     deleteNPS() {
         let version = "v1";
+        super.secureAPI(this.app);
         this.app.route(this.root + version + '/nps/:npsID').delete(this.npsController.deleteNPS);
     }
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"JWTModel.js","sourceRoot":"","sources":["../../../../lib/security/JWT/model/JWTModel.ts"],"names":[],"mappings":";;AACA,MAAa,QAAQ;IAIjB,YAAY,KAAa;QACrB,IAAI,CAAC,KAAK,GAAG,KAAK,CAAA;IACtB,CAAC;CACJ;AAPD,4BAOC"}
+{"version":3,"file":"JWTModel.js","sourceRoot":"","sources":["../../../../lib/security/JWT/model/JWTModel.ts"],"names":[],"mappings":";;AACA,MAAa,QAAQ;IAKjB,YAAY,YAAqB,EAAE,WAAoB;QACnD,IAAI,CAAC,WAAW,GAAG,WAAW,CAAA;QAC9B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAA;IACpC,CAAC;CAEJ;AAVD,4BAUC"}

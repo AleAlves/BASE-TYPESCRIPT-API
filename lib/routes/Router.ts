@@ -16,6 +16,7 @@ export class Router {
 
         this.authRoutes = new AuthRoutes(app, API_ROOT)
         this.npsRoutes = new NPSRoutes(app,API_ROOT)
+        
         // Create a new contact
         app.route('/contact').post(this.contactController.addNewContact);
 

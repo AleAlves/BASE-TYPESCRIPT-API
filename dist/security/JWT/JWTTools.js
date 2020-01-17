@@ -2,15 +2,35 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonWebToken = require('jsonwebtoken');
 const generator = require('generate-password');
-const tokenKey = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
+var key = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
     length: 64,
     numbers: true
 });
-const tokenLife = "24h";
+const sessionTokenLife = 84600; // 24h
+const accessTokenLife = 120; //2min
 class JWTTools {
-    sign(data) {
+    instance() {
+        console.log(key);
+        return jsonWebToken;
+    }
+    key() {
+        console.log(key);
+        return key;
+    }
+    signAccessToken(data) {
         try {
-            return jsonWebToken.sign(data, tokenKey, { expiresIn: tokenLife });
+            console.log(key);
+            return jsonWebToken.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: accessTokenLife });
+        }
+        catch (e) {
+            console.log("JWT e: " + e);
+            return null;
+        }
+    }
+    signSessionToken(data) {
+        try {
+            console.log(key);
+            return jsonWebToken.sign(JSON.parse(JSON.stringify(data)), key, { expiresIn: sessionTokenLife });
         }
         catch (e) {
             console.log("JWT e: " + e);
@@ -19,7 +39,8 @@ class JWTTools {
     }
     verify(jwt) {
         try {
-            return jwt.verify(tokenKey, tokenKey);
+            console.log(key);
+            return jwt.verify(key, key);
         }
         catch (e) {
             console.log("JWT e: " + e);

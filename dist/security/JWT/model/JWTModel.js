@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class JWTModel {
-    constructor(token) {
-        this.token = token;
+    constructor(sessionToken, accessToken) {
+        this.accessToken = accessToken;
+        this.sessionToken = sessionToken;
     }
 }
 exports.JWTModel = JWTModel;
