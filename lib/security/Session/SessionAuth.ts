@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     var rawToken = CryptoTools.JWT().instance().verify(token, CryptoTools.JWT().key())
   } catch (error) {
     console.log("Verify Error: " + error)
-    return res.status(403).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.FORBIDDEN));
+    return res.send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.FORBIDDEN));
   }
 
   console.log("is login: " + token && String(req.originalUrl).includes('login'))
@@ -40,6 +40,6 @@ module.exports = (req, res, next) => {
     });
   }
   else {
-    return res.status(403).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
+    return res.send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
   }
 }

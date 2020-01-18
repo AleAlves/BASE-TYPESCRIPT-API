@@ -1,7 +1,8 @@
 export class BaseRouter {
 
-    public secureAPI(app: any) {
-        app.use(require("../../security/Session/SessionAuth"))
+    public sessionControl() {
+        const sessionAuth = require("../../security/Session/SessionAuth")
+        return sessionAuth
     }
 
 }
