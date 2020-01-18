@@ -49,8 +49,8 @@ export class JWTTools {
     }
 
     public renewSessionToken(expiredToken : String){
-        let expiredTokenData = this.decodeToken(expiredToken)
-        let newToken = new JWTSession(expiredTokenData, JWTType.SESSION)
+        let decodedToken = this.decodeToken(expiredToken)
+        let newToken = new JWTSession(decodedToken, JWTType.SESSION)
         return this.signSessionToken(newToken)
     }
 
