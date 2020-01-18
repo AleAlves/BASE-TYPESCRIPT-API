@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { NPSSchema } from '../../models/nps/npsModel';
 import { Request, Response } from "express";
 import { BaseController } from "../BaseController"
-import { HTTPResponse } from "../../models/http/HTTPResponse";
+import { HTTPStatus } from '../../models/http/HTTPStatus';
 
 
 const NPS = mongoose.model('NPS', NPSSchema);
@@ -19,9 +19,9 @@ export class NPSController extends BaseController {
             //     super.send(res, null, err.name, 400, err.message);
             newNPS.save((err, nps) => {
                 if (err) {
-                    super.send(res, null, err.name, 400, err.message);
+                    super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
                 }
-                super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
+                super.send(res, nps);
             });
             // } else {
          //   super.send(res, nps, null, 200);
@@ -67,36 +67,36 @@ export class NPSController extends BaseController {
     public getNPS(req: Request, res: Response) {
         NPS.find({}, (err, nps) => {
             if (err) {
-                super.send(res, null, err.name, 400, err.message);
+                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
-            super.send(res, nps, null, 200);
+            super.send(res, nps);
         });
     }
 
     public getNPSWithID(req: Request, res: Response) {
         NPS.findById(req.params.npsID, (err, nps) => {
             if (err) {
-                super.send(res, null, err.name, 400, err.message);
+                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
-            super.send(res, nps, null, 200);
+            super.send(res, nps);
         });
     }
 
     public updateNPS(req: Request, res: Response) {
         NPS.findOneAndUpdate({ _id: req.params.npsID }, req.body, { new: true }, (err, nps) => {
             if (err) {
-                super.send(res, null, err.name, 400, err.message);
+                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
-            super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
+            super.send(res, nps);
         });
     }
 
     public deleteNPS(req: Request, res: Response) {
         NPS.remove({ _id: req.params.npsID }, (err, nps) => {
             if (err) {
-                super.send(res, null, err.name, 400, err.message);
+                super.send(res, null,new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
-            super.send(res, nps, null, 200);
+            super.send(res, nps);
         });
     }
 
