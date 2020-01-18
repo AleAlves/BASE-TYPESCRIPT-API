@@ -10,8 +10,8 @@ var key = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
     numbers: true
 });
 
-const sessionTokenLife = 300 // 3min
-const accessTokenLife = 60 //2min
+const sessionTokenLife = 43200 // 3min
+const accessTokenLife = 60 // 1min
 
 export class JWTTools {
 

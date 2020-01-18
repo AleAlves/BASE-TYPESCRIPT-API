@@ -2,16 +2,13 @@
 import { Response } from "express";
 import { HTTPResponse } from "../models/http/HTTPResponse";
 import { CryptoTools } from "../security/CryptoTools";
+import { Status } from "../models/http/Status"
 
 export class BaseController {
 
-    public send(res: Response, data?: any, status?: String, code?: number, message?: String, expiredToken?: String) {
-        console.log(JSON.stringify(data))
-        if (expiredToken) {
-            res.send(new HTTPResponse(data, status, code, message, CryptoTools.JWT().renewSessionToken(expiredToken)))
-            return
-        }
-        res.send(new HTTPResponse(data, status, code, message))
+    public send(res: Response, data?: any, status?: Status, expiredToken?: String) {
+        console.log("BaseController send() : "+JSON.stringify(data))
+        res.send(new HTTPResponse(data, status))
     }
 
 }

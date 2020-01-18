@@ -1,6 +1,8 @@
 
 import { CryptoTools } from "../CryptoTools";
 import { JWTType } from "../JWT/model/JWTType"
+import { HTTPResponse } from "../../models/http/HTTPResponse"
+import { HTTPStatus } from "../../models/http/HTTPStatus"
 
 module.exports = (req, res, next) => {
 
@@ -8,17 +10,21 @@ module.exports = (req, res, next) => {
 
   console.log("token: " + token);
 
-  let rawToken = CryptoTools.JWT().instance().verify(token, CryptoTools.JWT().key(), function (err, decoded) {
-    console.log("decode: " + JSON.stringify(decoded));
-    console.log("err: " + JSON.stringify(err));
-  });
+  try {
+    var rawToken = CryptoTools.JWT().instance().verify(token, CryptoTools.JWT().key())
+  } catch (error) {
+    console.log("Verify Error: " + error)
+    return res.status(403).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.FORBIDDEN));
+  }
 
   console.log("is login: " + token && String(req.originalUrl).includes('login'))
+
+  console.log("Raw Token: " + JSON.stringify(rawToken))
 
   if (token && rawToken.type == JWTType.ACCESS && String(req.originalUrl).includes('login')) {
     CryptoTools.JWT().instance().verify(token, CryptoTools.JWT().key(), function (err, decoded) {
       if (err) {
-        return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
+        return res.status(401).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
       }
       req.decoded = decoded;
       next();
@@ -27,16 +33,13 @@ module.exports = (req, res, next) => {
   else if (token && rawToken.type == JWTType.SESSION) {
     CryptoTools.JWT().instance().verify(token, CryptoTools.JWT().key(), function (err, decoded) {
       if (err) {
-        return res.status(401).json({ "error": true, "message": 'Unauthorized access.' });
+        return res.status(401).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
       }
       req.decoded = decoded;
       next();
     });
   }
   else {
-    return res.status(403).send({
-      "error": true,
-      "message": 'No token provided.'
-    });
+    return res.status(403).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
   }
 }

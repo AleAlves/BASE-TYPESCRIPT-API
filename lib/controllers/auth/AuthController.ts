@@ -20,6 +20,10 @@ export class AuthController extends BaseController {
         super.send(res, CryptoTools.RSA().decrypt(data.teste, "utf8"))
     }
 
+    public tokenStatus(req: Request, res: Response){
+        
+    }
+
     public generateAccessToken(req: Request, res: Response) {
 
         let body = JSON.parse(JSON.stringify(req.body))
