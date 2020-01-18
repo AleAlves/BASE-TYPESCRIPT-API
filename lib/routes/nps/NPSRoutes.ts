@@ -28,26 +28,22 @@ export class NPSRoutes extends BaseRouter{
 
     private getNPS(){
         let version = "v1"
-        super.secureAPI(this.app)
         this.app.route(this.root + version + '/nps').get(this.npsController.getNPS)
     }
 
     private getNPSWithID(){
         let version = "v1"
-        super.secureAPI(this.app)
         this.app.route(this.root + version + '/nps/:npsID').get(this.npsController.getNPSWithID)
     }
 
     private updateNPS() {
         let version = "v1"
-        super.secureAPI(this.app)
         this.app.route(this.root + version + '/nps/:npsID').post(this.npsController.updateNPS)
     }
 
 
     private deleteNPS() {
         let version = "v1"
-        super.secureAPI(this.app)
         this.app.route(this.root + version + '/nps/:npsID').delete(this.npsController.deleteNPS)
     }
 }

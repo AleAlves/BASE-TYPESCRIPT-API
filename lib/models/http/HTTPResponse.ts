@@ -13,6 +13,11 @@ export class HTTPResponse {
         if (token) {
             this.token = token
         }
-        this.response = new BaseResponse(HTTPStatus.status(), HTTPStatus.code())
+        if (HTTPStatus) {
+            this.response = new BaseResponse(HTTPStatus.status(), HTTPStatus.code())
+        }
+        else{
+            this.response = new BaseResponse()
+        }
     }
 }
