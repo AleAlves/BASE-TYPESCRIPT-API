@@ -18,17 +18,14 @@ export class AuthRoutes extends BaseRouter {
     }
 
     private publicKey() {
-        let version = "v1"
-        this.app.route(this.root + version + '/publicKey').get(this.authController.getPublicKey)
+        this.app.route(this.root +  "v1" + '/publicKey').get(this.authController.getPublicKey)
     }
 
     private decrypt() {
-        let version = "v1"
-        this.app.route(this.root + version + '/decrypt').post(this.authController.decrypt)
+        this.app.route(this.root +  "v1" + '/decrypt').post(this.authController.decrypt)
     }
 
     private generateAccessToken(){
-        let version = "v1"
-        this.app.route(this.root + version + '/accessToken').post(this.authController.generateAccessToken)
+        this.app.route(this.root +  "v1" + '/accessToken').post(this.authController.generateAccessToken)
     }
 }
