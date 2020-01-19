@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class BaseRouter {
-    secureAPI() {
-        return require("../../security/Session/SessionAuth");
+    sessionControl() {
+        const sessionAuth = require("../../security/Session/SessionAuth");
+        return sessionAuth;
     }
 }
 exports.BaseRouter = BaseRouter;

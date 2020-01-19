@@ -8,21 +8,18 @@ class AuthRoutes extends BaseRouter_1.BaseRouter {
         this.authController = new AuthController_1.AuthController();
         this.app = app;
         this.root = root;
+        this.login();
         this.publicKey();
-        this.decrypt();
-        this.generateAccessToken();
+        this.accessToken();
     }
     publicKey() {
-        let version = "v1";
-        this.app.route(this.root + version + '/publicKey').get(this.authController.getPublicKey);
+        this.app.route(this.root + "v1" + '/publicKey').get(this.authController.publicKey);
     }
-    decrypt() {
-        let version = "v1";
-        this.app.route(this.root + version + '/decrypt').post(this.authController.decrypt);
+    accessToken() {
+        this.app.route(this.root + "v1" + '/accessToken').post(this.authController.accessToken);
     }
-    generateAccessToken() {
-        let version = "v1";
-        this.app.route(this.root + version + '/accessToken').post(this.authController.generateAccessToken);
+    login() {
+        this.app.route(this.root + "v1" + '/login').post(super.sessionControl(), this.authController.login);
     }
 }
 exports.AuthRoutes = AuthRoutes;

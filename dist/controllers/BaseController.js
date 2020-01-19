@@ -5,6 +5,7 @@ class BaseController {
     send(res, data, status, expiredToken) {
         console.log("BaseController send() : " + JSON.stringify(data));
         res.send(new HTTPResponse_1.HTTPResponse(data, status));
+        return;
     }
 }
 exports.BaseController = BaseController;

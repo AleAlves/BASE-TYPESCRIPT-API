@@ -7,11 +7,8 @@ import { HTTPResponse } from "../models/http/HTTPResponse";
 
 const Contact = mongoose.model('Contact', ContactSchema);
 
-export class ContactController implements BaseController {
-    
-    send(res: Response, data: any) {
-        throw new Error("Method not implemented.");
-    }
+export class ContactController extends BaseController {
+
 
     public addNewContact(req: Request, res: Response) {
 

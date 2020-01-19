@@ -1,0 +1,1 @@
+{"version":3,"file":"AccessTokenModel.js","sourceRoot":"","sources":["../../../../lib/security/JWT/model/AccessTokenModel.ts"],"names":[],"mappings":";;AACA,MAAa,gBAAgB;IAIzB,YAAY,WAAoB;QAC5B,IAAI,CAAC,WAAW,GAAG,WAAW,CAAA;IAClC,CAAC;CAEJ;AARD,4CAQC"}

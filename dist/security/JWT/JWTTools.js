@@ -1,15 +1,24 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const JWT = require('jsonwebtoken');
 const generator = require('generate-password');
 const JWTSession_1 = require("../JWT/model/JWTSession");
 const JWTType_1 = require("../JWT/model/JWTType");
-var key = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
-    length: 64,
+var key = generator.generate({
+    length: 128,
     numbers: true
 });
-const sessionTokenLife = 43200; // 3min
-const accessTokenLife = 60; // 1min
+const sessionTokenLife = 43200; // 12 min
+const accessTokenLife = 30; // 1min
 class JWTTools {
     instance() {
         console.log(key);
@@ -45,11 +54,8 @@ class JWTTools {
         return this.signSessionToken(newToken);
     }
     decodeToken(token) {
-        JWT.verify(token, function (error, decodedToken) {
-            if (error) {
-                return undefined;
-            }
-            return decodedToken;
+        return __awaiter(this, void 0, void 0, function* () {
+            return JWT.verify(token, key);
         });
     }
     verify(token) {

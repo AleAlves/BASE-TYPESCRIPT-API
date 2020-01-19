@@ -1,0 +1,51 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose = require("mongoose");
+const BaseController_1 = require("../BaseController");
+const UserModel_1 = require("../../models/user/UserModel");
+const User = mongoose.model('User', UserModel_1.UserSchema);
+class UserController extends BaseController_1.BaseController {
+    create(req, res) {
+        let newUser = new User(req.body);
+        newUser.save((error, user) => {
+            if (error) {
+                super.send(error);
+            }
+            super.send(user);
+        });
+    }
+    get(req, res) {
+        User.find({}, (error, user) => {
+            if (error) {
+                super.send(error);
+            }
+            super.send(user);
+        });
+    }
+    find(req, res) {
+        User.findById(req.params.firebaseID, (error, user) => {
+            if (error) {
+                super.send(error);
+            }
+            super.send(user);
+        });
+    }
+    update(req, res) {
+        User.findOneAndUpdate({ _id: req.params.firebaseID }, req.body, { new: true }, (error, user) => {
+            if (error) {
+                super.send(error);
+            }
+            super.send(user);
+        });
+    }
+    delete(req, res) {
+        User.remove({ _id: req.params.firebaseID }, (error, user) => {
+            if (error) {
+                super.send(error);
+            }
+            super.send(user);
+        });
+    }
+}
+exports.UserController = UserController;
+//# sourceMappingURL=UserController.js.map

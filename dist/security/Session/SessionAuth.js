@@ -5,7 +5,6 @@ const JWTType_1 = require("../JWT/model/JWTType");
 const HTTPResponse_1 = require("../../models/http/HTTPResponse");
 const HTTPStatus_1 = require("../../models/http/HTTPStatus");
 module.exports = (req, res, next) => {
-    next();
     const token = req.headers['accesstoken'] || req.headers['sessiontoken'];
     console.log("token: " + token);
     try {

@@ -15,24 +15,19 @@ class NPSRoutes extends BaseRouter_1.BaseRouter {
         this.deleteNPS();
     }
     addNewNPS() {
-        let version = "v1";
-        this.app.route(this.root + version + '/nps').post(require("../../security/Session/SessionAuth"), this.npsController.addNewNPS);
+        this.app.route(this.root + "v1" + '/nps').post(super.sessionControl(), this.npsController.addNewNPS);
     }
     getNPS() {
-        let version = "v1";
-        this.app.route(this.root + version + '/nps').get(this.npsController.getNPS);
+        this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.getNPS);
     }
     getNPSWithID() {
-        let version = "v1";
-        this.app.route(this.root + version + '/nps/:npsID').get(this.npsController.getNPSWithID);
+        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getNPSWithID);
     }
     updateNPS() {
-        let version = "v1";
-        this.app.route(this.root + version + '/nps/:npsID').post(this.npsController.updateNPS);
+        this.app.route(this.root + "v1" + '/nps/:npsID').post(super.sessionControl(), this.npsController.updateNPS);
     }
     deleteNPS() {
-        let version = "v1";
-        this.app.route(this.root + version + '/nps/:npsID').delete(this.npsController.deleteNPS);
+        this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.deleteNPS);
     }
 }
 exports.NPSRoutes = NPSRoutes;

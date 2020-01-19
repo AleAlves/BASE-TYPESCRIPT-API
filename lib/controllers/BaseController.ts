@@ -9,6 +9,7 @@ export class BaseController {
     public send(res: Response, data?: any, status?: Status, expiredToken?: String) {
         console.log("BaseController send() : "+JSON.stringify(data))
         res.send(new HTTPResponse(data, status))
+        return
     }
 
 }

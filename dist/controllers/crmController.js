@@ -2,12 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const crmModel_1 = require("../models/crmModel");
+const BaseController_1 = require("./BaseController");
 const HTTPResponse_1 = require("../models/http/HTTPResponse");
 const Contact = mongoose.model('Contact', crmModel_1.ContactSchema);
-class ContactController {
-    send(res, data) {
-        throw new Error("Method not implemented.");
-    }
+class ContactController extends BaseController_1.BaseController {
     addNewContact(req, res) {
         let newContact = new Contact(req.body);
         newContact.save((err, contact) => {

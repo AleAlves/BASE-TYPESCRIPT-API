@@ -12,20 +12,20 @@ export class AuthRoutes extends BaseRouter {
         super();
         this.app = app
         this.root = root
+        this.login()
         this.publicKey()
-        this.decrypt()
-        this.generateAccessToken()
+        this.accessToken()
     }
 
     private publicKey() {
-        this.app.route(this.root +  "v1" + '/publicKey').get(this.authController.getPublicKey)
+        this.app.route(this.root +  "v1" + '/publicKey').get(this.authController.publicKey)
     }
 
-    private decrypt() {
-        this.app.route(this.root +  "v1" + '/decrypt').post(this.authController.decrypt)
+    private accessToken(){
+        this.app.route(this.root +  "v1" + '/accessToken').post(this.authController.accessToken)
     }
 
-    private generateAccessToken(){
-        this.app.route(this.root +  "v1" + '/accessToken').post(this.authController.generateAccessToken)
+    private login(){
+        this.app.route(this.root +  "v1" + '/login').post(super.sessionControl(), this.authController.login)
     }
 }

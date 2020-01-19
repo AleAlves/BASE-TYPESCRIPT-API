@@ -5,13 +5,13 @@ const generator = require('generate-password');
 import { JWTSession } from "../JWT/model/JWTSession"
 import { JWTType } from "../JWT/model/JWTType"
 
-var key = process.env.JSON_WEB_TOKEN_SECRET || generator.generate({
-    length: 64,
+var key = generator.generate({
+    length: 128,
     numbers: true
 });
 
-const sessionTokenLife = 43200 // 3min
-const accessTokenLife = 60 // 1min
+const sessionTokenLife = 43200 // 12 min
+const accessTokenLife = 30 // 1min
 
 export class JWTTools {
 
@@ -54,13 +54,8 @@ export class JWTTools {
         return this.signSessionToken(newToken)
     }
 
-    public decodeToken(token: String) {
-        JWT.verify(token, function(error, decodedToken){
-            if(error){
-                return undefined
-            }
-            return decodedToken
-        });
+    public async decodeToken(token: String) {
+        return JWT.verify(token, key)
     }
 
     public verify(token: String) {

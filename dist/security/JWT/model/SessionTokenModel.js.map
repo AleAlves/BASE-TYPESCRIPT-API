@@ -1,0 +1,1 @@
+{"version":3,"file":"SessionTokenModel.js","sourceRoot":"","sources":["../../../../lib/security/JWT/model/SessionTokenModel.ts"],"names":[],"mappings":";;AACA,MAAa,iBAAiB;IAI1B,YAAY,YAAqB;QAC7B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAA;IACpC,CAAC;CAEJ;AARD,8CAQC"}
