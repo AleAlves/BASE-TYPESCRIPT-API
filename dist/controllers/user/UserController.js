@@ -9,41 +9,42 @@ class UserController extends BaseController_1.BaseController {
         let newUser = new User(req.body);
         newUser.save((error, user) => {
             if (error) {
-                super.send(error);
+                super.send(res, error);
             }
-            super.send(user);
+            super.send(res, user);
         });
     }
     get(req, res) {
+        console.log("Session: " + JSON.stringify(req.params.session));
         User.find({}, (error, user) => {
             if (error) {
-                super.send(error);
+                super.send(res, error);
             }
-            super.send(user);
+            super.send(res, user);
         });
     }
     find(req, res) {
         User.findById(req.params.firebaseID, (error, user) => {
             if (error) {
-                super.send(error);
+                super.send(res, error);
             }
-            super.send(user);
+            super.send(res, user);
         });
     }
     update(req, res) {
         User.findOneAndUpdate({ _id: req.params.firebaseID }, req.body, { new: true }, (error, user) => {
             if (error) {
-                super.send(error);
+                super.send(res, error);
             }
-            super.send(user);
+            super.send(res, user);
         });
     }
     delete(req, res) {
         User.remove({ _id: req.params.firebaseID }, (error, user) => {
             if (error) {
-                super.send(error);
+                super.send(res, error);
             }
-            super.send(user);
+            super.send(res, user);
         });
     }
 }

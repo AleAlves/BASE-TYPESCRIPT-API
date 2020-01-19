@@ -21,6 +21,11 @@ export class UserController extends BaseController {
     }
 
     public get(req: Request, res: Response) {
+
+        console.log("\n=======\n")
+        console.log("get user SESSION: "+ JSON.stringify(super.session(req)))
+        console.log("\n=======\n")
+
         User.find({}, (error, user) => {
             if (error) {
                 super.send(res, error);

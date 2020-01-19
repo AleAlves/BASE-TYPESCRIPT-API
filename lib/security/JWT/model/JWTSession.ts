@@ -10,7 +10,7 @@ export class JWTSession {
     created: number
     type: JWTType
 
-    constructor(clientAESData: any, type: JWTType) {
+    constructor(clientAESData: any, type?: JWTType) {
         this.id = clientAESData.id
         this.uid = clientAESData.uid
         this.AESIV = clientAESData.AESIV

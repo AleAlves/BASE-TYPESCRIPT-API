@@ -42,15 +42,27 @@ export class AuthController extends BaseController {
 
     public login(req: Request, res: Response) {
 
+        console.log("\n\n\n\n ==================")
+
         let userModel = User(req.body)
 
-        const token = req.headers['accesstoken'].toString();
-        let accessToken =  JSON.parse(JSON.stringify(CryptoTools.JWT().decodeToken(token)))
-        let session = new JWTSession(accessToken, JWTType.SESSION)
+        const token = JSON.parse(JSON.stringify(req.params.access));
+
+        console.log("token: "+ token)
+
+        let session = new JWTSession(token, JWTType.SESSION)
+
+        console.log("session: "+ JSON.stringify(session))
+
         let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
+
+        console.log("encrypted session: "+ JSON.stringify(sessionTokenEncrypted))
+
         let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
 
         console.log("User"+ JSON.stringify(userModel))
+
+        console.log("\n\n\n\n ==================")
 
         if(userModel == null){
             super.send(undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)

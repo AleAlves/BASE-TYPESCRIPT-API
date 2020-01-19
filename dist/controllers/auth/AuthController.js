@@ -31,13 +31,17 @@ class AuthController extends BaseController_1.BaseController {
         super.send(res, accessToken);
     }
     login(req, res) {
+        console.log("\n\n\n\n ==================");
         let userModel = User(req.body);
-        const token = req.headers['accesstoken'].toString();
-        let accessToken = JSON.parse(JSON.stringify(CryptoTools_1.CryptoTools.JWT().decodeToken(token)));
-        let session = new JWTSession_1.JWTSession(accessToken, JWTType_1.JWTType.SESSION);
+        const token = JSON.parse(JSON.stringify(req.params.access));
+        console.log("token: " + token);
+        let session = new JWTSession_1.JWTSession(token, JWTType_1.JWTType.SESSION);
+        console.log("session: " + JSON.stringify(session));
         let sessionTokenEncrypted = CryptoTools_1.CryptoTools.JWT().signSessionToken(session);
+        console.log("encrypted session: " + JSON.stringify(sessionTokenEncrypted));
         let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel_1.SessionTokenModel(sessionTokenEncrypted)));
         console.log("User" + JSON.stringify(userModel));
+        console.log("\n\n\n\n ==================");
         if (userModel == null) {
             super.send(undefined, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             return;

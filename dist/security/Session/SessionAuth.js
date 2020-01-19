@@ -21,7 +21,8 @@ module.exports = (req, res, next) => {
             if (err) {
                 return res.status(401).send(new HTTPResponse_1.HTTPResponse(undefined, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
             }
-            req.decoded = decoded;
+            console.log("Raw Token decoded: " + JSON.stringify(decoded));
+            req.params.access = decoded;
             next();
         });
     }
@@ -30,7 +31,7 @@ module.exports = (req, res, next) => {
             if (err) {
                 return res.status(401).send(new HTTPResponse_1.HTTPResponse(undefined, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
             }
-            req.decoded = decoded;
+            req.params.session = decoded;
             next();
         });
     }
