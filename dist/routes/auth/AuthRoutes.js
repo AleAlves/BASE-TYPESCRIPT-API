@@ -11,6 +11,10 @@ class AuthRoutes extends BaseRouter_1.BaseRouter {
         this.login();
         this.publicKey();
         this.accessToken();
+        this.testAES();
+    }
+    testAES() {
+        this.app.route(this.root + "v1" + '/test').get(this.authController.testAES);
     }
     publicKey() {
         this.app.route(this.root + "v1" + '/publicKey').get(this.authController.publicKey);

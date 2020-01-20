@@ -6,7 +6,7 @@ import { HTTPStatus } from "../../models/http/HTTPStatus"
 
 module.exports = (req, res, next) => {
 
-  const token = req.headers['accesstoken'] || req.headers['sessiontoken'];
+  const token = req.headers['access-token'] || req.headers['session-token'];
 
   console.log("token: " + token);
 
@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
         return res.status(401).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
       }
       console.log("Raw Token decoded: " + JSON.stringify(decoded))
-      req.params.access = decoded;
+      req.params.access = JSON.parse(JSON.stringify(decoded));
       next();
     });
   }
@@ -36,7 +36,7 @@ module.exports = (req, res, next) => {
       if (err) {
         return res.status(401).send(new HTTPResponse(undefined, new HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
       }
-      req.params.session  = decoded;
+      req.params.session = decoded;
       next();
     });
   }

@@ -15,7 +15,9 @@ class UserController extends BaseController_1.BaseController {
         });
     }
     get(req, res) {
-        console.log("Session: " + JSON.stringify(req.params.session));
+        console.log("\n=======\n");
+        console.log("get user SESSION: " + JSON.stringify(super.session(req)));
+        console.log("\n=======\n");
         User.find({}, (error, user) => {
             if (error) {
                 super.send(res, error);

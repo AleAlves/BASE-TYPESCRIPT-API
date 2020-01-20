@@ -32,40 +32,26 @@ export class AuthController extends BaseController {
         let encrypted = CryptoTools.JWT().signAccessToken(session)
         let accessToken = JSON.parse(JSON.stringify(new AccessTokenModel(encrypted)))
 
-        console.log("Body: " + JSON.stringify(body))
-        console.log("Plain: " + JSON.stringify(plainData))
-        console.log("Session: " + JSON.stringify(plainData))
-        console.log("Token: " + JSON.stringify(accessToken))
+        console.log("\n\n\n\n ==================")
+        console.log("\nBody: " + JSON.stringify(body))
+        console.log("\nPlain: " + JSON.stringify(plainData))
+        console.log("\nSession: " + JSON.stringify(plainData))
+        console.log("\nToken: " + JSON.stringify(accessToken))
+        console.log("==================\n\n\n\n ")
 
         super.send(res, accessToken)
     }
 
     public login(req: Request, res: Response) {
 
-        console.log("\n\n\n\n ==================")
+        const token = new JWTSession(req.params.access);
 
-        let userModel = User(req.body)
+        let userData = CryptoTools.AES().decrypt(req.body.data, token.AESKey, token.AESSalt, token.AESIV)
 
-        const token = JSON.parse(JSON.stringify(req.params.access));
+        let userModel = User(JSON.parse(userData))
 
-        console.log("token: "+ token)
-
-        let session = new JWTSession(token, JWTType.SESSION)
-
-        console.log("session: "+ JSON.stringify(session))
-
-        let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
-
-        console.log("encrypted session: "+ JSON.stringify(sessionTokenEncrypted))
-
-        let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
-
-        console.log("User"+ JSON.stringify(userModel))
-
-        console.log("\n\n\n\n ==================")
-
-        if(userModel == null){
-            super.send(undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
+        if (userModel == null) {
+            super.send(res, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
             return
         }
 
@@ -75,7 +61,19 @@ export class AuthController extends BaseController {
                 return
             }
             if (user) {
-                super.send(res,sessionToken)
+                
+                token.id = user._id
+
+                token.firebaseID = user.firebaseID
+
+                let session = new JWTSession(token, JWTType.SESSION)
+
+                let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
+        
+                let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
+        
+                super.send(res, sessionToken)
+                return
             }
             else {
                 userModel.save((error, user) => {
@@ -83,9 +81,35 @@ export class AuthController extends BaseController {
                         super.send(res, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                         return
                     }
+
+                    token.id = user._id
+
+                    token.firebaseID = user.firebaseID
+
+                    let session = new JWTSession(token, JWTType.SESSION)
+
+                    let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
+            
+                    let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
+            
                     super.send(res, sessionToken)
                 });
             }
         });
+    }
+
+    public testAES() {
+        const key = "aDoteTXz9c6POCI2"
+        const salt = "apph5qEE"
+        const iv = "Fki5DpYuYyV139iVBbkFHw=="
+        const plain = "wow"
+        const chiper = "bMnkjVuD0mKlxTVuhsGT/w=="
+        console.log("\n\nPlain: " + plain)
+        // let data = CryptoTools.AES().encrypt(plain, key, salt, iv)
+        let safe = CryptoTools.AES().decrypt(chiper, key, salt, iv)
+        console.log("\n==============")
+        // console.log("AES enc: " + data)
+        console.log("AES dec: " + safe)
+        console.log("==============")
     }
 }

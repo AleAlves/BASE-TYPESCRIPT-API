@@ -5,7 +5,7 @@ const JWTType_1 = require("../JWT/model/JWTType");
 const HTTPResponse_1 = require("../../models/http/HTTPResponse");
 const HTTPStatus_1 = require("../../models/http/HTTPStatus");
 module.exports = (req, res, next) => {
-    const token = req.headers['accesstoken'] || req.headers['sessiontoken'];
+    const token = req.headers['access-token'] || req.headers['session-token'];
     console.log("token: " + token);
     try {
         var rawToken = CryptoTools_1.CryptoTools.JWT().instance().verify(token, CryptoTools_1.CryptoTools.JWT().key());
@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
                 return res.status(401).send(new HTTPResponse_1.HTTPResponse(undefined, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.UNAUTHORIZED));
             }
             console.log("Raw Token decoded: " + JSON.stringify(decoded));
-            req.params.access = decoded;
+            req.params.access = JSON.parse(JSON.stringify(decoded));
             next();
         });
     }
