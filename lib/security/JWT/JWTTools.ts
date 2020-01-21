@@ -20,12 +20,6 @@ export class JWTTools {
         return JWT
     }
 
-    public key(){
-        console.log(key)
-        return key
-    }
-
-
     public signAccessToken(data: any) {
         try {
             console.log(key)

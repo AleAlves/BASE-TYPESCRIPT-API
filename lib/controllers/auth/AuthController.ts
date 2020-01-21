@@ -5,6 +5,7 @@ import { BaseController } from "../BaseController"
 import { CryptoTools } from "../../security/CryptoTools";
 import { PublicKey } from "../../security/RSA/model/PublicKey";
 import { JWTSession } from "../../security/JWT/model/JWTSession";
+import { JWTStatusModel } from "../../security/JWT/model/JWTStatusModel";
 import { SessionTokenModel } from "../../security/JWT/model/SessionTokenModel";
 import { AccessTokenModel } from "../../security/JWT/model/AccessTokenModel";
 import { JWTType } from "../../security/JWT/model/JWTType"
@@ -20,8 +21,20 @@ export class AuthController extends BaseController {
         super.send(res, publicKey)
     }
 
-    public tokenStatus(req: Request, res: Response) {
-
+    public validateToken(req: Request, res: Response) {
+        try {
+            var token = CryptoTools.JWT().instance().verify(req.params.token)
+            if (token) {
+                super.send(res, new JWTStatusModel(true))
+            }
+            else {
+                super.send(res, new JWTStatusModel(false))
+            }
+            return
+        } catch (error) {
+            super.send(res, new JWTStatusModel(false))
+            return
+        }
     }
 
     public accessToken(req: Request, res: Response) {
@@ -32,12 +45,12 @@ export class AuthController extends BaseController {
         let encrypted = CryptoTools.JWT().signAccessToken(session)
         let accessToken = JSON.parse(JSON.stringify(new AccessTokenModel(encrypted)))
 
-        console.log("\n\n\n\n ==================")
+        console.log("\n\n\n\n ======== TOKEN ==========")
         console.log("\nBody: " + JSON.stringify(body))
         console.log("\nPlain: " + JSON.stringify(plainData))
         console.log("\nSession: " + JSON.stringify(plainData))
         console.log("\nToken: " + JSON.stringify(accessToken))
-        console.log("==================\n\n\n\n ")
+        console.log("========= TOKEN =========\n\n\n\n ")
 
         super.send(res, accessToken)
     }
@@ -51,65 +64,45 @@ export class AuthController extends BaseController {
         let userModel = User(JSON.parse(userData))
 
         if (userModel == null) {
-            super.send(res, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
+            super.send(res, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
             return
         }
 
         User.findOne({ 'firebaseID': userModel.firebaseID }, (error, user) => {
             if (error) {
-                super.send(res, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                super.send(res, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                 return
             }
             if (user) {
-                
-                token.id = user._id
+                let sessionToken = this.generateSessionToken(user, token)
 
-                token.firebaseID = user.firebaseID
-
-                let session = new JWTSession(token, JWTType.SESSION)
-
-                let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
-        
-                let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
-        
                 super.send(res, sessionToken)
                 return
             }
             else {
                 userModel.save((error, user) => {
                     if (error) {
-                        super.send(res, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                        super.send(res, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                         return
                     }
 
-                    token.id = user._id
+                    let sessionToken = this.generateSessionToken(user, token)
 
-                    token.firebaseID = user.firebaseID
-
-                    let session = new JWTSession(token, JWTType.SESSION)
-
-                    let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
-            
-                    let sessionToken = JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
-            
                     super.send(res, sessionToken)
                 });
             }
         });
     }
 
-    public testAES() {
-        const key = "aDoteTXz9c6POCI2"
-        const salt = "apph5qEE"
-        const iv = "Fki5DpYuYyV139iVBbkFHw=="
-        const plain = "wow"
-        const chiper = "bMnkjVuD0mKlxTVuhsGT/w=="
-        console.log("\n\nPlain: " + plain)
-        // let data = CryptoTools.AES().encrypt(plain, key, salt, iv)
-        let safe = CryptoTools.AES().decrypt(chiper, key, salt, iv)
-        console.log("\n==============")
-        // console.log("AES enc: " + data)
-        console.log("AES dec: " + safe)
-        console.log("==============")
+    private generateSessionToken(user: any, token: JWTSession) {
+        token.id = user._id
+
+        token.firebaseID = user.firebaseID
+
+        let session = new JWTSession(token, JWTType.SESSION)
+
+        let sessionTokenEncrypted = CryptoTools.JWT().signSessionToken(session)
+
+        return JSON.parse(JSON.stringify(new SessionTokenModel(sessionTokenEncrypted)))
     }
 }

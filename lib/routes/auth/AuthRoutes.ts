@@ -15,19 +15,19 @@ export class AuthRoutes extends BaseRouter {
         this.login()
         this.publicKey()
         this.accessToken()
-        this.testAES()
-    }
-
-    private testAES(){
-        this.app.route(this.root +  "v1" + '/test').get(this.authController.testAES)
+        this.validateToken()
     }
 
     private publicKey() {
-        this.app.route(this.root +  "v1" + '/publicKey').get(this.authController.publicKey)
+        this.app.route(this.root +  "v1" + '/public-key').get(this.authController.publicKey)
     }
 
     private accessToken(){
-        this.app.route(this.root +  "v1" + '/accessToken').post(this.authController.accessToken)
+        this.app.route(this.root +  "v1" + '/access-token').get(this.authController.accessToken)
+    }
+
+    private validateToken(){
+        this.app.route(this.root +  "v1" + '/token-status/:id').get(this.authController.validateToken)
     }
 
     private login(){

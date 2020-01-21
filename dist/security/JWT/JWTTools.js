@@ -24,10 +24,6 @@ class JWTTools {
         console.log(key);
         return JWT;
     }
-    key() {
-        console.log(key);
-        return key;
-    }
     signAccessToken(data) {
         try {
             console.log(key);
