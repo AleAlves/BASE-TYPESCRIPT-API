@@ -38,6 +38,6 @@ export class NPSRoutes extends BaseRouter {
 
 
     private delete() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.deleteNPS)
+        this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.delete)
     }
 }

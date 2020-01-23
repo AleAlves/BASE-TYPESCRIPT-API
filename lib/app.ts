@@ -3,6 +3,8 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Router } from "./routes/Router";
 import * as mongoose from "mongoose";
+import swaggerUi from 'swagger-ui-express'
+import * as swaggerDocument from 'swagger-ui-express'
 const packageInfo = require('../package.json');
 
 class App {
@@ -16,6 +18,11 @@ class App {
     this.config();
     this.router.routes(this.app);
     this.mongoSetup();
+    const swaggerUi = require('swagger-ui-express');
+    const swaggerDocument = require('./swagger.json');
+
+    this.app.use('/api-docs', swaggerUi.serve);
+    this.app.get('/api-docs', swaggerUi.setup(swaggerDocument));
   }
 
   private config(): void {
