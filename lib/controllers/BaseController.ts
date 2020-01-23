@@ -10,9 +10,9 @@ export class BaseController {
         return new JWTSession(JSON.parse(JSON.stringify(req.params.session)))
     }
 
-    public send(res: Response, data?: any, status?: Status, expiredToken?: String) {
+    public send(res: Response, data?: any, message?: String, status?: Status) {
         console.log("BaseController send() : "+JSON.stringify(data))
-        res.send(new HTTPResponse(data, status))
+        res.send(new HTTPResponse(data, status, message))
         return
     }
 

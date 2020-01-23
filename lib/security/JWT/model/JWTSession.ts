@@ -3,7 +3,7 @@ import { JWTType } from "../model/JWTType"
 export class JWTSession {
     
     firebaseID: String
-    id: String
+    userID: String
     AESIV: String
     AESKey: String
     AESSalt: String
@@ -11,7 +11,7 @@ export class JWTSession {
     type: JWTType
 
     constructor(clientAESData: any, type?: JWTType) {
-        this.id = clientAESData.id
+        this.userID = clientAESData.id
         this.firebaseID = clientAESData.firebaseID
         this.AESIV = clientAESData.AESIV.replace(/(\r\n|\n|\r)/gm, "");
         this.AESKey = clientAESData.AESKey.replace(/(\r\n|\n|\r)/gm, "");

@@ -19,5 +19,9 @@ export const NPSSchema = new Schema({
     created_date: {
         type: Date,
         default: Date.now
+    },
+    userID: {
+        type: String,
+        required: 'UserID Required'
     }
 });

@@ -64,13 +64,13 @@ export class AuthController extends BaseController {
         let userModel = User(JSON.parse(userData))
 
         if (userModel == null) {
-            super.send(res, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
+            super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST)
             return
         }
 
         User.findOne({ 'firebaseID': userModel.firebaseID }, (error, user) => {
             if (error) {
-                super.send(res, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                super.send(res, undefined, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                 return
             }
             if (user) {
@@ -82,7 +82,7 @@ export class AuthController extends BaseController {
             else {
                 userModel.save((error, user) => {
                     if (error) {
-                        super.send(res, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                        super.send(res, undefined, undefined, new HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                         return
                     }
 
@@ -95,7 +95,7 @@ export class AuthController extends BaseController {
     }
 
     private generateSessionToken(user: any, token: JWTSession) {
-        token.id = user._id
+        token.userID = user._id
 
         token.firebaseID = user.firebaseID
 

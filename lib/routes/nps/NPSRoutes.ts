@@ -12,32 +12,32 @@ export class NPSRoutes extends BaseRouter {
         super()
         this.app = app
         this.root = root
-        this.addNewNPS()
-        this.getNPS()
-        this.getNPSWithID()
-        this.updateNPS()
-        this.deleteNPS()
+        this.add()
+        this.get()
+        this.getWithID()
+        this.update()
+        this.delete()
 
     }
 
-    private addNewNPS() {
-        this.app.route(this.root + "v1" + '/nps').post(super.sessionControl(), this.npsController.addNewNPS)
+    private add() {
+        this.app.route(this.root + "v1" + '/nps').post(super.sessionControl(), this.npsController.add)
     }
 
-    private getNPS() {
-        this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.getNPS)
+    private get() {
+        this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.get)
     }
 
-    private getNPSWithID() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getNPSWithID)
+    private getWithID() {
+        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getWithID)
     }
 
-    private updateNPS() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').post(super.sessionControl(), this.npsController.updateNPS)
+    private update() {
+        this.app.route(this.root + "v1" + '/nps/:npsID').post(super.sessionControl(), this.npsController.update)
     }
 
 
-    private deleteNPS() {
+    private delete() {
         this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.deleteNPS)
     }
 }

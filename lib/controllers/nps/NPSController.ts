@@ -7,36 +7,30 @@ import { HTTPStatus } from '../../models/http/HTTPStatus';
 
 const NPS = mongoose.model('NPS', NPSSchema);
 
-export class NPSController extends BaseController {   
-    public addNewNPS(req: Request, res: Response) {
+export class NPSController extends BaseController {
+    public add(req: Request, res: Response) {
         //TODO: authorizedUser
         let nps = req.body
+        nps.userID = super.session(req).userID
         nps.versionApp = NPSController.transformVersionToIntWithPadding(nps.versionApp)
         let newNPS = new NPS(req.body);
 
-       //TODO: NPS.findById(req.params.npsID, (err, nps) => {
-            // if (err) {
-            //     super.send(res, null, err.name, 400, err.message);
-            newNPS.save((err, nps) => {
-                if (err) {
-                    super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
-                }
-                super.send(res, nps);
-            });
-            // } else {
-         //   super.send(res, nps, null, 200);
-        //  NPS.findOneAndUpdate({ _id: req.params.npsID }, req.body, { new: true }, (err, nps) => {
-        //     if (err) {
-        //         super.send(res, null, err.name, 400, err.message);
-        //     }
-        //     super.send(res, nps, 'Success', 200, 'Obrigado pela avaliação!');
-        // });
-        //}
-        //});
-       
+        NPS.findOneAndUpdate({ 'userID': newNPS.userID, 'versionApp': newNPS.versionApp }, newNPS, (err, nps) => {
+            if (nps) {
+                super.send(res, nps, 'Obrigado pela avaliação!');
+            } else {
+                newNPS.save((err, nps) => {
+                    if (err) {
+                        super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+                    }
+                    super.send(res, nps, 'Obrigado pela avaliação!');
+                });
+            }
+        });
+
     }
 
-    public static transformVersionToIntWithPadding(version: string) : Number {
+    public static transformVersionToIntWithPadding(version: string): Number {
         let versionArray: Array<string> = version.split('.')
         var versionWithPadding = ""
 
@@ -44,11 +38,11 @@ export class NPSController extends BaseController {
             let versionPadding = NPSController.leadingNullString(versionNumber, 4)
             versionWithPadding = versionWithPadding + versionPadding
         });
-    
-        return +versionWithPadding
-     }
 
-     public static leadingNullString(value: string|number, minSize: number): string {
+        return +versionWithPadding
+    }
+
+    public static leadingNullString(value: string | number, minSize: number): string {
         if (typeof value == "number") {
             value = "" + value;
         }
@@ -61,40 +55,38 @@ export class NPSController extends BaseController {
         }
         return (value + outString);
     }
-        
 
-
-    public getNPS(req: Request, res: Response) {
+    public get(req: Request, res: Response) {
         NPS.find({}, (err, nps) => {
             if (err) {
-                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+                super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
             super.send(res, nps);
         });
     }
 
-    public getNPSWithID(req: Request, res: Response) {
+    public getWithID(req: Request, res: Response) {
         NPS.findById(req.params.npsID, (err, nps) => {
             if (err) {
-                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+                super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
             super.send(res, nps);
         });
     }
 
-    public updateNPS(req: Request, res: Response) {
+    public update(req: Request, res: Response) {
         NPS.findOneAndUpdate({ _id: req.params.npsID }, req.body, { new: true }, (err, nps) => {
             if (err) {
-                super.send(res, null, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+                super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
             super.send(res, nps);
         });
     }
 
-    public deleteNPS(req: Request, res: Response) {
+    public delete(req: Request, res: Response) {
         NPS.remove({ _id: req.params.npsID }, (err, nps) => {
             if (err) {
-                super.send(res, null,new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+                super.send(res, undefined, undefined, new HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             }
             super.send(res, nps);
         });
