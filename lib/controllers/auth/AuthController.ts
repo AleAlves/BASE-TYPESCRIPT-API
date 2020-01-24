@@ -42,7 +42,6 @@ export class AuthController extends BaseController {
     }
 
     public accessToken(req: Request, res: Response) {
-
         let body = JSON.parse(JSON.stringify(req.body))
         let plainData = CryptoTools.RSA().decrypt(req.body.data, "json")
         let session = new JWTSession(plainData, JWTType.ACCESS)
