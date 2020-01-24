@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class JWTStatusModel {
     constructor(expired) {
-        this.expired = expired;
+        this.valid = expired;
     }
 }
 exports.JWTStatusModel = JWTStatusModel;

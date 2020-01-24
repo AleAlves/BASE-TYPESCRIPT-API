@@ -11,15 +11,18 @@ const AccessTokenModel_1 = require("../../security/JWT/model/AccessTokenModel");
 const JWTType_1 = require("../../security/JWT/model/JWTType");
 const UserModel_1 = require("../../models/user/UserModel");
 const HTTPStatus_1 = require("../../models/http/HTTPStatus");
+const Logger_1 = require("../../tools/Logger");
 const User = mongoose.model('User', UserModel_1.UserSchema);
 class AuthController extends BaseController_1.BaseController {
     publicKey(req, res) {
-        let publicKey = new PublicKey_1.PublicKey(CryptoTools_1.CryptoTools.RSA().publicKey());
-        super.send(res, publicKey);
+        let publicKeyModel = new PublicKey_1.PublicKey(CryptoTools_1.CryptoTools.RSA().publicKey());
+        Logger_1.Logger.log(publicKeyModel, AuthController.name, "publicKey");
+        super.send(res, publicKeyModel);
     }
     validateToken(req, res) {
         try {
-            var token = CryptoTools_1.CryptoTools.JWT().instance().verify(req.params.id);
+            var token = CryptoTools_1.CryptoTools.JWT().instance().verify(req.params.token);
+            Logger_1.Logger.log("AuthController", "validateToken", token);
             if (token) {
                 super.send(res, new JWTStatusModel_1.JWTStatusModel(true));
             }
@@ -29,7 +32,8 @@ class AuthController extends BaseController_1.BaseController {
             return;
         }
         catch (error) {
-            super.send(res, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.FORBIDDEN);
+            Logger_1.Logger.log("AuthController", "validateToken", token);
+            super.send(res, new JWTStatusModel_1.JWTStatusModel(false));
             return;
         }
     }
@@ -39,12 +43,10 @@ class AuthController extends BaseController_1.BaseController {
         let session = new JWTSession_1.JWTSession(plainData, JWTType_1.JWTType.ACCESS);
         let encrypted = CryptoTools_1.CryptoTools.JWT().signAccessToken(session);
         let accessToken = JSON.parse(JSON.stringify(new AccessTokenModel_1.AccessTokenModel(encrypted)));
-        console.log("\n\n\n\n ======== TOKEN ==========");
-        console.log("\nBody: " + JSON.stringify(body));
-        console.log("\nPlain: " + JSON.stringify(plainData));
-        console.log("\nSession: " + JSON.stringify(plainData));
-        console.log("\nToken: " + JSON.stringify(accessToken));
-        console.log("========= TOKEN =========\n\n\n\n ");
+        Logger_1.Logger.log(body, AuthController.name, "accessToken", "body");
+        Logger_1.Logger.log(plainData, AuthController.name, "accessToken", "plain");
+        Logger_1.Logger.log(session, AuthController.name, "accessToken", "session");
+        Logger_1.Logger.log(accessToken, AuthController.name, "accessToken", "accessToken");
         super.send(res, accessToken);
     }
     login(req, res) {
@@ -52,12 +54,12 @@ class AuthController extends BaseController_1.BaseController {
         let userData = CryptoTools_1.CryptoTools.AES().decrypt(req.body.data, token.AESKey, token.AESSalt, token.AESIV);
         let userModel = User(JSON.parse(userData));
         if (userModel == null) {
-            super.send(res, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
+            super.send(res, undefined, undefined, new HTTPStatus_1.HTTPStatus.CLIENT_ERROR.BAD_REQUEST);
             return;
         }
         User.findOne({ 'firebaseID': userModel.firebaseID }, (error, user) => {
             if (error) {
-                super.send(res, new HTTPStatus_1.HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                super.send(res, undefined, undefined, new HTTPStatus_1.HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                 return;
             }
             if (user) {
@@ -68,7 +70,7 @@ class AuthController extends BaseController_1.BaseController {
             else {
                 userModel.save((error, user) => {
                     if (error) {
-                        super.send(res, new HTTPStatus_1.HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
+                        super.send(res, undefined, undefined, new HTTPStatus_1.HTTPStatus.BUSINESS.DUPLICATED_REGISTER);
                         return;
                     }
                     let sessionToken = this.generateSessionToken(user, token);
@@ -78,7 +80,7 @@ class AuthController extends BaseController_1.BaseController {
         });
     }
     generateSessionToken(user, token) {
-        token.id = user._id;
+        token.userID = user._id;
         token.firebaseID = user.firebaseID;
         let session = new JWTSession_1.JWTSession(token, JWTType_1.JWTType.SESSION);
         let sessionTokenEncrypted = CryptoTools_1.CryptoTools.JWT().signSessionToken(session);

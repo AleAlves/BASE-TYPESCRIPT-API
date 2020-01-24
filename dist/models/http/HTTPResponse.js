@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseResponse_1 = require("./BaseResponse");
 class HTTPResponse {
-    constructor(data, HTTPStatus, token) {
+    constructor(data, HTTPStatus, message) {
         if (data) {
             this.data = JSON.parse(JSON.stringify(data));
         }
-        if (token) {
-            this.token = token;
+        if (message) {
+            this.message = message;
         }
         if (HTTPStatus) {
             this.response = new BaseResponse_1.BaseResponse(HTTPStatus.status(), HTTPStatus.code());

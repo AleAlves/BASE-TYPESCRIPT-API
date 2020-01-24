@@ -8,26 +8,26 @@ class NPSRoutes extends BaseRouter_1.BaseRouter {
         this.npsController = new NPSController_1.NPSController();
         this.app = app;
         this.root = root;
-        this.addNewNPS();
-        this.getNPS();
-        this.getNPSWithID();
-        this.updateNPS();
-        this.deleteNPS();
+        this.add();
+        this.get();
+        this.getWithID();
+        this.update();
+        this.delete();
     }
-    addNewNPS() {
-        this.app.route(this.root + "v1" + '/nps').post(super.sessionControl(), this.npsController.addNewNPS);
+    add() {
+        this.app.route(this.root + "v1" + '/nps').post(super.sessionControl(), this.npsController.add);
     }
-    getNPS() {
-        this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.getNPS);
+    get() {
+        this.app.route(this.root + "v1" + '/nps').get(super.sessionControl(), this.npsController.get);
     }
-    getNPSWithID() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getNPSWithID);
+    getWithID() {
+        this.app.route(this.root + "v1" + '/nps/:npsID').get(super.sessionControl(), this.npsController.getWithID);
     }
-    updateNPS() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').post(super.sessionControl(), this.npsController.updateNPS);
+    update() {
+        this.app.route(this.root + "v1" + '/nps/:npsID').post(super.sessionControl(), this.npsController.update);
     }
-    deleteNPS() {
-        this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.deleteNPS);
+    delete() {
+        this.app.route(this.root + "v1" + '/nps/:npsID').delete(super.sessionControl(), this.npsController.delete);
     }
 }
 exports.NPSRoutes = NPSRoutes;

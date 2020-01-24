@@ -11,19 +11,22 @@ import { AccessTokenModel } from "../../security/JWT/model/AccessTokenModel";
 import { JWTType } from "../../security/JWT/model/JWTType"
 import { UserSchema } from '../../models/user/UserModel';
 import { HTTPStatus } from '../../models/http/HTTPStatus';
+import { Logger } from '../../tools/Logger'
 
 const User = mongoose.model('User', UserSchema);
 
 export class AuthController extends BaseController {
 
     public publicKey(req: Request, res: Response) {
-        let publicKey = new PublicKey(CryptoTools.RSA().publicKey())
-        super.send(res, publicKey)
+        let publicKeyModel = new PublicKey(CryptoTools.RSA().publicKey())
+        Logger.log(publicKeyModel, AuthController.name, "publicKey")
+        super.send(res, publicKeyModel)
     }
 
     public validateToken(req: Request, res: Response) {
         try {
             var token = CryptoTools.JWT().instance().verify(req.params.token)
+            Logger.log(token, AuthController.name, "validateToken")
             if (token) {
                 super.send(res, new JWTStatusModel(true))
             }
@@ -32,6 +35,7 @@ export class AuthController extends BaseController {
             }
             return
         } catch (error) {
+            Logger.log(token, AuthController.name, "validateToken")
             super.send(res, new JWTStatusModel(false))
             return
         }
@@ -45,12 +49,10 @@ export class AuthController extends BaseController {
         let encrypted = CryptoTools.JWT().signAccessToken(session)
         let accessToken = JSON.parse(JSON.stringify(new AccessTokenModel(encrypted)))
 
-        console.log("\n\n\n\n ======== TOKEN ==========")
-        console.log("\nBody: " + JSON.stringify(body))
-        console.log("\nPlain: " + JSON.stringify(plainData))
-        console.log("\nSession: " + JSON.stringify(plainData))
-        console.log("\nToken: " + JSON.stringify(accessToken))
-        console.log("========= TOKEN =========\n\n\n\n ")
+        Logger.log(body, AuthController.name, "accessToken", "body")
+        Logger.log(plainData, AuthController.name, "accessToken", "plain")
+        Logger.log(session, AuthController.name, "accessToken" , "session")
+        Logger.log(accessToken, AuthController.name, "accessToken", "accessToken")
 
         super.send(res, accessToken)
     }

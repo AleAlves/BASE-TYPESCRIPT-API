@@ -6,9 +6,9 @@ class BaseController {
     session(req) {
         return new JWTSession_1.JWTSession(JSON.parse(JSON.stringify(req.params.session)));
     }
-    send(res, data, status, expiredToken) {
+    send(res, data, message, status) {
         console.log("BaseController send() : " + JSON.stringify(data));
-        res.send(new HTTPResponse_1.HTTPResponse(data, status));
+        res.send(new HTTPResponse_1.HTTPResponse(data, status, message));
         return;
     }
 }

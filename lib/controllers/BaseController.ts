@@ -3,6 +3,7 @@ import { Response } from "express";
 import { HTTPResponse } from "../models/http/HTTPResponse";
 import { Status } from "../models/http/Status"
 import { JWTSession } from "../security/JWT/model/JWTSession";
+import { Logger } from '../tools/Logger'
 
 export class BaseController {
 
@@ -11,7 +12,7 @@ export class BaseController {
     }
 
     public send(res: Response, data?: any, message?: String, status?: Status) {
-        console.log("BaseController send() : "+JSON.stringify(data))
+        Logger.log(data, BaseController.name, "send")
         res.send(new HTTPResponse(data, status, message))
         return
     }

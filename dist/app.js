@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const Router_1 = require("./routes/Router");
 const mongoose = require("mongoose");
 const packageInfo = require('../package.json');
+const expressOasGenerator = require('express-oas-generator');
+const DEVELOPMENT = process.env.DEVELOPMENT_ENV || true;
 class App {
     constructor() {
         this.router = new Router_1.Router();
@@ -14,6 +16,7 @@ class App {
         this.config();
         this.router.routes(this.app);
         this.mongoSetup();
+        this.swagger();
     }
     config() {
         this.app.use(bodyParser.json());
@@ -22,6 +25,12 @@ class App {
     mongoSetup() {
         mongoose.Promise = global.Promise;
         mongoose.connect(this.mongoUrl);
+    }
+    swagger() {
+        if (DEVELOPMENT) {
+            expressOasGenerator.handleResponses(this.app);
+            expressOasGenerator.handleRequests();
+        }
     }
 }
 exports.default = new App().app;
